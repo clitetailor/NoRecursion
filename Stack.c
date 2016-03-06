@@ -35,6 +35,11 @@ void DestroyStack(Stack * stack)
 
 void push(Stack * stack, void * data)
 {
+	if (CheckFull(stack) == true)
+	{
+		return;
+	}
+	
 	stack->data [ stack->top ] = data;
 	
 	++ (stack->top);
@@ -42,6 +47,11 @@ void push(Stack * stack, void * data)
 
 void * pop(Stack * stack)
 {
+	if (CheckEmpty(stack) == true)
+	{
+		return NULL;
+	}
+	
 	-- (stack->top);
 	return stack->data [ stack->top ];
 }

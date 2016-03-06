@@ -23,8 +23,6 @@ void * pop(Stack * stack);
 bool CheckEmpty(Stack * stack);
 bool CheckFull(Stack * stack);
 
-int SizeofStack(Stack * stack);
-
 bool Match(Stack * stack, void * data);
 
 #endif

@@ -6,110 +6,83 @@
 
 
 
-void swap(char * a, char * b)
+void SwapChar(char * a, char * b)
+{
+	char temp = * a;
+	* a = * b;
+	* b = temp;
+}
+
+void SwapInt(int * a, int * b)
 {
 	int temp = * a;
 	* a = * b;
 	* b = temp;
 }
 
-
-void PermutationRecursion(char * str, int n)
-{
-	PermutationTailRecursion(str, n, 0);
-}
-
-
-void PermutationTailRecursion(char * str, int n, int k)
-{
-	if (k == n - 1)
-	{
-		printf("%s\n", str);
-		return;
-	}
-	
-	int i;
-	int stop = n - k;
-	for (i = 0; i < stop; ++i)
-	{
-		swap(str + k, str + k + i);
-		PermutationTailRecursion(str, n, k + 1);
-		swap(str + k, str + k + i);
-	}
-}
-
-typedef struct
-{
-	int k;
-	int i;
-}
-State;
-
-State * CreateState(int k, int i)
-{
-	State * state = (State *) malloc(sizeof(State));
-	
-	state->k = k;
-	state->i = i;
-	
-	return state;
-}
-
 void Permutation(char * str, int n)
 {
-	Stack * StateStack;
+	printf("%s\n", str);
 	
-	CreateStack( &StateStack, sizeof(State), n * n );
+	int * a;
+	a = (int *) malloc (sizeof(int) * n);
 	
-	int k = 0;
-	int i = 0;
+	int i;
+	for (i = 0; i < n; ++i)
+	{
+		a[i] = i;
+	}
 	
-	State * state;
-	
+	bool flag;
 	do
 	{
-		for (i = 0 ; i < n - k; ++i)
+		flag = true;
+		for (i = n - 1; i > -1; --i)
 		{
-			state = CreateState(k, i);
-			printf("%d %d\n", k, i);
-			push(StateStack, state);
-		}
-		
-		state = pop(StateStack);
-		k = state->k;
-		i = state->i;
-		
-		swap(str + k, str + k + i);
-		
-		while (i == 0)
-		{
-			if (k == n - 1)
+			if (a[i - 1] < a[i])
 			{
-				printf("%s\n", str);
+				flag = false;
+				break;
 			}
-			
-			state = pop(StateStack);
-			k = state->k;
-			i = state->i;
-			
-			free(state);
-			
-			swap(str + k, str + k + i);
 		}
 		
-		++k;
-	}
-	while (CheckEmpty(StateStack) != true);
+		if (flag)
+		{
+			break;
+		}
+		
+		--i;
+		
+		int j;
+		for (j = n - 1; j > i; --j)
+		{
+			if (a[i] < a[j])
+			{
+				SwapInt(a + i, a + j);
+				break;
+			}
+		}
+		
+		for (j = 1; j < (n - i) / 2 + 1; ++j)
+		{
+			SwapInt(a + i + j, a + n - j);
+		}
+		
+		for (i = 0; i < n; ++i)
+		{
+			printf("%c", str[a[i]]);
+		}
+		
+		printf("\n");
+	} while (1);
 	
-	DestroyStack(StateStack);
+	free(a);
 }
 
+#ifdef test
 
 int main()
 {
-
-
-
 	char str[100];
 	
 	fflush(stdin);
@@ -117,7 +90,6 @@ int main()
 	printf("\nPermutation:\n");
 	
 	Permutation(str, strlen(str));
-
 
 #ifdef test2
 	
@@ -149,11 +121,118 @@ int main()
 	
 #endif
 	
-	
-	
-	
-	
-	
-	
 	return 0;
 }
+
+#endif
+
+#ifdef test
+
+
+
+void PermutationRecursion(char * str, int n)
+{
+	PermutationTailRecursion(str, n, 0);
+}
+
+
+void PermutationTailRecursion(char * str, int n, int k)
+{
+	if (k == n - 1)
+	{
+		printf("%s\n", str);
+		return;
+	}
+	
+	int i;
+	int stop = n - k;
+	for (i = 0; i < stop; ++i)
+	{
+		SwapChar(str + k, str + k + i);
+		PermutationTailRecursion(str, n, k + 1);
+		SwapChar(str + k, str + k + i); // After backtrack
+	}
+}
+
+typedef struct
+{
+	int k;
+	int i;
+}
+State;
+
+State * CreateState(int k, int i)
+{
+	State * state = (State *) malloc(sizeof(State));
+	
+	state->k = k;
+	state->i = i;
+	
+	return state;
+}
+
+
+void Permutation(char * str, int n)
+{
+	Stack * StateStack;
+	Stack * CurrentBranch;
+	
+	CreateStack( &StateStack, sizeof(State), n * n );	// Not the best way to save memory :(
+	CreateStack( &CurrentBranch, sizeof(State), n);
+	
+	int k = 0;
+	int i = 0;
+	
+	State * state;
+	State * done;
+	
+	
+	do
+	{
+		for (i = 0; i < n - k; ++i)
+		{
+			state = CreateState(k, i);
+			printf("push %d %d\n", k, i);
+			push(StateStack, state);
+		}
+		
+		state = pop(StateStack);
+		push(CurrentBranch, state); // The first pop is for current procedure
+		printf("\n%d\n", CurrentBranch->top);
+		k = state->k;
+		i = state->i;
+		printf("pop  %d %d\n", k, i);
+		
+		SwapChar(str + k, str + k + i);
+		
+		if (i == 0)
+		{
+			if (k == n - 1)
+			{
+				printf("\n%s\n\n", str);
+			}
+			
+			state = pop(StateStack); // The second pop is for finished procedure
+			if (state == NULL) {break;} // There is no more job to do in the state stack. Jump out
+			
+			done = pop(CurrentBranch); // After backtrack
+			SwapChar(str + done->k, str + done->k + done->i);
+			
+			k = state->k;
+			i = state->i;
+			printf("pop  %d %d\n", k, i);
+			
+			free(state);
+			free(done);
+			
+			SwapChar(str + k, str + k + i);
+		}
+		
+		++k;
+	}
+	while (1);
+	
+	DestroyStack(StateStack);
+}
+
+#endif
