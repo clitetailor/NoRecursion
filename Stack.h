@@ -14,7 +14,7 @@ typedef struct
 Stack;
 
 
-bool CreateStack(Stack * stack, int datatype, int quantity);
+bool CreateStack(Stack ** stack, int datatype, int quantity);
 void DestroyStack(Stack * stack);
 
 void push(Stack * stack, void * data);

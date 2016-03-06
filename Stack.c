@@ -6,18 +6,21 @@
 
 
 
-bool CreateStack(Stack * stack, int datatype, int quantity)
+bool CreateStack(Stack ** stack, int datatype, int quantity)
 {
-	stack->data = (void **) malloc( sizeof(void *) * quantity );
+	(* stack) = (Stack *) malloc( sizeof(Stack) );
 	
-	if (stack->data == NULL)
+	(* stack)->data = (void **) malloc( sizeof(void *) * quantity );
+	
+	
+	if ( (* stack)->data == NULL )
 	{
 		return false;
 	}
 	
-	stack->top = 0;
-	stack->datatype = datatype;
-	stack->quantity = quantity;
+	(* stack)->top = 0;
+	(* stack)->datatype = datatype;
+	(* stack)->quantity = quantity;
 }
 
 void DestroyStack(Stack * stack)
