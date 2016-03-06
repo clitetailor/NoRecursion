@@ -59,7 +59,7 @@ void Permutation(char * str, int n)
 {
 	Stack * StateStack;
 	
-	CreateStack( &StateStack, sizeof(State), n*n );
+	CreateStack( &StateStack, sizeof(State), n * n );
 	
 	int k = 0;
 	int i = 0;
@@ -68,9 +68,25 @@ void Permutation(char * str, int n)
 	
 	do
 	{
-		if (k == n-1)
+		for (i = 0 ; i < n - k; ++i)
 		{
-			printf("%s\n", str);
+			state = CreateState(k, i);
+			printf("%d %d\n", k, i);
+			push(StateStack, state);
+		}
+		
+		state = pop(StateStack);
+		k = state->k;
+		i = state->i;
+		
+		swap(str + k, str + k + i);
+		
+		while (i == 0)
+		{
+			if (k == n - 1)
+			{
+				printf("%s\n", str);
+			}
 			
 			state = pop(StateStack);
 			k = state->k;
@@ -81,21 +97,7 @@ void Permutation(char * str, int n)
 			swap(str + k, str + k + i);
 		}
 		
-		for ( ; i < n - k; ++i)
-		{
-			swap(str + k, str + k + i);
-			
-			state = CreateState(k, i);
-			push(StateStack, state);
-		}
-		
-		state = pop(StateStack);
-		k = state->k + 1;
-		i = state->i;
-		
-		free(state);
-		
-		swap(str + k, str + k + i);
+		++k;
 	}
 	while (CheckEmpty(StateStack) != true);
 	
