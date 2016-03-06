@@ -22,6 +22,8 @@ void SwapInt(int * a, int * b)
 
 void Permutation(char * str, int n)
 {
+	int count = 1;
+	
 	printf("%s\n", str);
 	
 	int * a;
@@ -74,12 +76,17 @@ void Permutation(char * str, int n)
 		}
 		
 		printf("\n");
+		
+		++count;
+		
 	} while (1);
+	
+	printf("\nCount: %d", count);
 	
 	free(a);
 }
 
-#ifdef test
+
 
 int main()
 {
@@ -124,7 +131,7 @@ int main()
 	return 0;
 }
 
-#endif
+
 
 #ifdef test
 
@@ -197,7 +204,7 @@ void Permutation(char * str, int n)
 		}
 		
 		state = pop(StateStack);
-		push(CurrentBranch, state); // The first pop is for current procedure
+		push(CurrentBranch, state);
 		printf("\n%d\n", CurrentBranch->top);
 		k = state->k;
 		i = state->i;
@@ -212,10 +219,10 @@ void Permutation(char * str, int n)
 				printf("\n%s\n\n", str);
 			}
 			
-			state = pop(StateStack); // The second pop is for finished procedure
-			if (state == NULL) {break;} // There is no more job to do in the state stack. Jump out
+			state = pop(StateStack);
+			if (state == NULL) {break;}
 			
-			done = pop(CurrentBranch); // After backtrack
+			done = pop(CurrentBranch);
 			SwapChar(str + done->k, str + done->k + done->i);
 			
 			k = state->k;
