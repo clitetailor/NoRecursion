@@ -3,19 +3,8 @@
 
 #include <stdbool.h>
 
-void swap(char * a, char * b);
-
-typedef struct
-{
-	int status;
-	int k;
-	int i;
-	int stop;
-}
-PermutationParam;
-
-void PermutationRecursion(char * str, int n);
-void PermutationTailRecursion(char * str, int n, int k);
+void SwapInt(int *a, int *b);
+void SwapChar(char *a, char *b);
 
 bool Permute(char * str, int n);
 
