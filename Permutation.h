@@ -1,6 +1,8 @@
 #ifndef H_PERMUTATION
 #define H_PERMUTATION
 
+#include <stdbool.h>
+
 void swap(char * a, char * b);
 
 typedef struct
@@ -15,6 +17,6 @@ PermutationParam;
 void PermutationRecursion(char * str, int n);
 void PermutationTailRecursion(char * str, int n, int k);
 
-void Permutation(char * str, int n);
+bool Permute(char * str, int n);
 
 #endif
