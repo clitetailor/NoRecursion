@@ -20,7 +20,7 @@ void SwapInt(int * a, int * b)
 	* b = temp;
 }
 
-bool Permute(char * str, int n)
+bool PermuteStr(char * str, int n)
 {	
 	static int * a = NULL;
 	
@@ -56,6 +56,9 @@ bool Permute(char * str, int n)
 			SwapChar(str + i, str + n - i - 1);
 		}
 		
+		free(a);
+		a = NULL;
+		
 		return false;
 	}
 	
@@ -81,11 +84,85 @@ bool Permute(char * str, int n)
 	return true;
 }
 
+int * Permute(int n)
+{
+	static int current = 0;
+	static int * a = NULL;
+	
+	if (a == NULL)
+	{
+		a = (int *) malloc(sizeof(int));
+		
+		int i;
+		for (i = 0; i < n; ++i)
+		{
+			a[i] = i;
+		}
+		
+		current = n;
+		
+		return a;
+	}
+	
+	if (current != n)
+	{
+		realloc(a, sizeof(int) * n);
+		
+		int i;
+		for (i = 0; i < n; ++i)
+		{
+			a[i] = i;
+		}
+		
+		current = n;
+		
+		return a;
+	}
+	
+	int i;
+	bool flag;
+
+	flag = true;
+	for (i = n - 1; i > -1; --i)
+	{
+		if (a[i - 1] < a[i])
+		{
+			flag = false;
+			break;
+		}
+	}
+	
+	if (flag)
+	{
+		free(a);
+		a = NULL;
+		
+		return NULL;
+	}
+	
+	--i;
+	
+	int j;
+	for (j = n - 1; j > i; --j)
+	{
+		if (a[i] < a[j])
+		{
+			SwapInt(a + i, a + j);
+			break;
+		}
+	}
+	
+	for (j = 1; j < (n - i) / 2 + 1; ++j)
+	{
+		SwapInt(a + i + j, a + n - j);
+	}
+	
+	return a;
+}
 
 
-#ifdef test
 
-int main()
+int PermutationMain()
 {
 	char str[100];
 	
@@ -96,9 +173,7 @@ int main()
 	do
 	{
 		printf("\t%s \n", str);
-	} while (Permute(str, strlen(str)));
+	} while (PermuteStr(str, strlen(str)));
 	
 	return 0;
 }
-
-#endif

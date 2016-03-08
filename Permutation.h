@@ -6,6 +6,7 @@
 void SwapInt(int *a, int *b);
 void SwapChar(char *a, char *b);
 
-bool Permute(char * str, int n);
+bool PermuteStr(char * str, int n);
+int * Permute(int n);
 
 #endif

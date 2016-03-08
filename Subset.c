@@ -6,121 +6,33 @@
 
 
 
-
-void PrintAllSubsetRecursion(int n)
-{
-	int * a = (int *) malloc( sizeof(int) * n );
-	
-	if (a == NULL)
-	{
-		printf("Not enough memory");
-		return;
-	}
-	
-	PrintAllSubsetTailRecursion(a, n, 0);
-}
-
-
-void PrintAllSubsetTailRecursion(int * a, int n, int k)
-{
-	if (k == n)
-	{
-		int i;
-		bool flag = false;
-		for (i = 0; i < n; ++i)
-		{
-			if (a[i] != -1 && flag == false)
-			{
-				printf("%d", a[i] );
-				flag = true;
-			}
-			if (a[i] != -1 && flag == true)
-			{
-				printf(", %d", a[i]);
-			}
-		}
-		
-		printf("\n");
-		return;
-	}
-	
-	a[k] = -1;
-	PrintAllSubsetTailRecursion(a, n, k + 1);
-	
-	a[k] = k + 1;
-	PrintAllSubsetTailRecursion(a, n, k + 1);
-	
-}
-
-
-void PrintAllSubset(int n)
-{
-	int * a = (int *) malloc (sizeof(int) * n);
-	
-	if (a == NULL)
-	{
-		printf("Not enough memory");
-		return;
-	}
-	
-	static long long unsigned int i;
-	
-	
-	int top = 1;						// top = 2 ^ n
-	for (i = 0; i < n; ++i)
-	{
-		top = top * 2;
-	}
-	
-	long long unsigned int j;
-	for (i = 0; i < top; ++i)
-	{
-		bool flag = false;
-		
-		for (j = 0; j < n; ++j)
-		{
-			if ( i & (1 << j) )
-			{
-						if (flag == true)
-						{
-							printf(", %d", j + 1);
-						}
-						else
-						{
-							printf("%d", j + 1);
-							flag = true;
-						}
-			}
-		}
-		
-		printf("\n");
-	}
-	
-}
-
-
-int * Subset(int n)
+bool * Subset(int n)
 {
 	static int current = 0;
 	static long long unsigned int i;
-	static int * a = NULL;
+	static bool * a = NULL;
 	static long long int top;
 	if (current != n)
 	{
+		if (a != NULL)
+		{
+			free(a);
+		}
+		
 		top = 1;						// top = 2 ^ n
 		for (i = 0; i < n; ++i)
 		{
 			top = top * 2;
 		}
 		
-		a = (int *) malloc(sizeof(int) * n);
+		a = (bool *) malloc(sizeof(bool) * n);
 		
 		i = 0;
 		
 		current = n;
 	}
 	
-	long long unsigned int j;
+	int j;
 	
 	if (i == top)
 	{
@@ -131,11 +43,11 @@ int * Subset(int n)
 	{
 		if ( i & (1 << j) )
 		{
-			a[j] = j + 1;
+			a[j] = true;
 		}
 		else
 		{
-			a[j] = -1;
+			a[j] = false;
 		}
 	}
 	
@@ -145,33 +57,36 @@ int * Subset(int n)
 }
 
 
-#ifdef test
 
-
-int main()
+int SubsetMain()
 {
+	int count = 1;
 	int n;
 	
-	printf("Set size:");
+	printf("\nKich thuoc tap hop:");
 	fflush(stdin);
 	scanf("%d", &n);
 	
-	int * a = Subset(n);
+	printf("\nCac tap con cua tap {1, 2, ..., n} la:\n");
+	
+	bool * a = Subset(n);
 	
 	do
 	{
 		int i;
 		for (i = 0; i < n; ++i)
 		{
-			if (a[i] != -1)
+			if (a[i])
 			{
-				printf("%d ", a[i]);
+				printf("%d ", i);
 			}
 		}
 		
 		printf("\n");
 		
 		a = Subset(n);
+		
+		++count;
 	} while (a != NULL);
 	
 	free(a);
