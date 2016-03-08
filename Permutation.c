@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 
 
@@ -91,7 +92,7 @@ int * Permute(int n)
 	
 	if (a == NULL)
 	{
-		a = (int *) malloc(sizeof(int));
+		a = (int *) malloc(sizeof(int) * n);
 		
 		int i;
 		for (i = 0; i < n; ++i)
@@ -135,6 +136,7 @@ int * Permute(int n)
 	if (flag)
 	{
 		free(a);
+		
 		a = NULL;
 		
 		return NULL;
