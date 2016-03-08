@@ -2,7 +2,9 @@
 #include "Permutation.h"
 #include "Traveller.h"
 
+#include <stdlib.h>
 #include <stdio.h>
+#include <windows.h>
 
 
 void Run(int selection)
@@ -31,7 +33,7 @@ void Run(int selection)
 		}
 		case 5:
 		{
-			printf("\nChua hoan thanh!\n);
+			printf("\nChua hoan thanh!\n");
 			break;
 		}
 	}
@@ -48,6 +50,7 @@ int main(int argc, char ** argv)
 	menu[2] = "Bai toan ba lo";
 	menu[3] = "Bai toan nguoi du lich";
 	menu[4] = "Bai toan sap xep quan hau";
+	menu[5] = "Thoat";
 	
 	int selection;
 	do
@@ -62,7 +65,7 @@ int main(int argc, char ** argv)
 		
 		printf("\nNhap vao lenh (1-%d):", menusize);
 		fflush(stdin);
-		scanf("%d", selection);
+		scanf("%d", &selection);
 		
 		if (selection < 1 || selection > menusize)
 		{
@@ -71,5 +74,20 @@ int main(int argc, char ** argv)
 		}
 		
 		Run(selection);
+		
+		if (selection == 6)
+		{
+			printf("\nChuong trinh ket thuc! ");
+			Sleep(100);
+			printf(".");
+			Sleep(100);
+			printf(".");
+			Sleep(100);
+			printf(".");
+			
+			break;
+		}
 	} while (1);
+	
+	return 0;
 }

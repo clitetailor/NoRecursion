@@ -74,15 +74,24 @@ int SubsetMain()
 	do
 	{
 		int i;
+		int flag = false;
+		
+		printf("{");
+		
 		for (i = 0; i < n; ++i)
 		{
-			if (a[i])
+			if (a[i] && flag == false)
 			{
 				printf("%d ", i);
+				flag = true;
+			}
+			if (a[i] && flag == true)
+			{
+				printf(", %d", i);
 			}
 		}
 		
-		printf("\n");
+		printf("}\n");
 		
 		a = Subset(n);
 		
@@ -93,6 +102,3 @@ int SubsetMain()
 	
 	return 0;
 }
-
-
-#endif

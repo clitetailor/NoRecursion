@@ -168,13 +168,15 @@ int PermutationMain()
 {
 	char str[100];
 	
+	printf("\nNhap vao xau:");
+	
 	fflush(stdin);
 	gets(str);
-	printf("\nPermutation:\n");
+	printf("\nCac hoan vi cua xau:\n");
 	
 	do
 	{
-		printf("\t%s \n", str);
+		printf("%s \n", str);
 	} while (PermuteStr(str, strlen(str)));
 	
 	return 0;
